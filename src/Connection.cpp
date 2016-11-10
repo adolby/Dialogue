@@ -57,11 +57,10 @@ void Connection::ConnectionPrivate::destroySocket()
 
 Connection::Connection(QObject* parent)
   : QObject{parent}
-{
 #if defined(Q_OS_ANDROID)
-  m = new ConnectionPrivate{};
+    , m{new ConnectionPrivate{}}
 #endif
-
+{
   // Grab pointer to main thread for cleanup
   m->mainThread = this->thread();
 
