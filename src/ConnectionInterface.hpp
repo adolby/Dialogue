@@ -1,0 +1,28 @@
+#ifndef CONNECTIONDATA_HPP_
+#define CONNECTIONDATA_HPP_
+
+#include <QObject>
+#include <QString>
+
+class ConnectionInterface : public QObject {
+  Q_OBJECT
+  Q_PROPERTY(QString status READ status NOTIFY statusChanged)
+
+ public:
+  explicit ConnectionInterface(QObject* parent = Q_NULLPTR);
+  QString status() const;
+
+ signals:
+  void statusChanged();
+  void message(const QString& msgText, const QString& recipient);
+
+ public slots:
+  void updateStatus(const QString& status);
+  void incomingMessage(const QString& msgText);
+  void outgoingMessage(const QString& msgText, const QString& recipient);
+
+ private:
+  QString m_status;
+};
+
+#endif // CONNECTIONDATA_HPP_

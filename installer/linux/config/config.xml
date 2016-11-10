@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Installer>
+    <Name>Dialogue</Name>
+    <Version>0.1</Version>
+    <Title>Dialogue Chat</Title>
+    <Publisher>The Dialogue Project</Publisher>
+    <ProductUrl>https://github.com/adolby/Dialogue/</ProductUrl>
+    <InstallerWindowIcon>dialogue</InstallerWindowIcon>
+    <Logo>logo.png</Logo>
+    <StartMenuDir>Dialogue</StartMenuDir>
+    <TargetDir>@HomeDir@/@ProductName@</TargetDir>
+    <AdminTargetDir>@ApplicationsDir@/@ProductName@</AdminTargetDir>
+</Installer>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="53.878803mm"
+   height="54.021339mm"
+   viewBox="0 0 190.90915 191.4142"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="dialogue.svg">
+  <defs
+     id="defs4">
+    <linearGradient
+       id="linearGradient5062">
+      <stop
+         style="stop-color:#ff6600;stop-opacity:1;"
+         offset="0"
+         id="stop5064" />
+      <stop
+         style="stop-color:#ff9900;stop-opacity:1;"
+         offset="1"
+         id="stop5066" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient5062"
+       id="linearGradient6628"
+       x1="215.68184"
+       y1="214.9987"
+       x2="24.734463"
+       y2="23.069717"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.89892098,0,0,0.89892098,12.150523,12.082914)" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.979899"
+     inkscape:cx="96.824481"
+     inkscape:cy="93.534961"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer2"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:window-width="1440"
+     inkscape:window-height="802"
+     inkscape:window-x="-4"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Bubble"
+     style="display:inline"
+     transform="translate(-24.753587,-23.832191)">
+    <rect
+       style="fill:url(#linearGradient6628);fill-opacity:1;stroke:none"
+       id="rect5304"
+       width="170.68724"
+       height="171.14125"
+       x="34.864536"
+       y="33.968666"
+       ry="14.65338"
+       rx="0" />
+    <path
+       style="fill:#003399;fill-opacity:1;stroke:#003399;stroke-width:1.0926733;stroke-linecap:butt;stroke-opacity:1"
+       d="m 118.41124,54.733326 a 63.466583,63.466583 0 0 0 -63.466808,63.466814 63.466583,63.466583 0 0 0 63.466808,63.46682 63.466583,63.466583 0 0 0 23.88943,-4.71215 c 3.75982,1.59559 36.93743,8.12545 37.66949,7.32219 0.57018,-0.62565 -5.77028,-19.6611 -9.59291,-29.69639 a 63.466583,63.466583 0 0 0 11.49869,-36.38047 63.466583,63.466583 0 0 0 -63.4647,-63.466814 z"
+       id="path5331"
+       inkscape:connector-curvature="0" />
+    <circle
+       style="fill:#ffffff;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.66570896px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="path5000"
+       cx="89.561394"
+       cy="119.53929"
+       r="10.423247" />
+    <circle
+       r="10.423247"
+       cy="119.53929"
+       cx="119.49889"
+       id="circle5042"
+       style="fill:#ffffff;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.66570896px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <circle
+       r="10.423247"
+       cy="119.53929"
+       cx="150.10883"
+       id="circle5044"
+       style="fill:#ffffff;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.66570896px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+  </g>
+</svg>
