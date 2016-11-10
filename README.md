@@ -16,7 +16,7 @@ If you are using the Dialogue installer, it is located in your install folder (d
 
 If you are using the Dialogue portable version, you can download it from https://www.microsoft.com/en-us/download/details.aspx?id=48145. Choose file vc_redist.x64.exe.
 
-Run the redistributable installer, and you should then be able to start Kryvos.
+Run the redistributable installer, and you should then be able to start Dialogue.
 
 ###Using Dialogue
 Enter the IP address of the person you want to chat with, then wait for the Connection Status to change to Connected. Next, select the Conversation button to go to the conversation page. Enter text into the message field and then select the Send button to send your message.
