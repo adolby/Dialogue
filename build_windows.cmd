@@ -21,7 +21,7 @@ rd /s /q Dialogue\qrc\
 echo Copying files for archival...
 copy "%project_dir%\README.md" "Dialogue\README.md"
 copy "%project_dir%\LICENSE" "Dialogue\LICENSE.txt"
-copy ".%project_dir%\Qt License" "Dialogue\Qt License.txt"
+copy "%project_dir%\Qt License" "Dialogue\Qt License.txt"
 
 echo Copying files for installer...
 mkdir %project_dir%\installer\windows\x86_64\packages\com.dialogueproject.dialogue\data\
