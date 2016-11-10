@@ -23,10 +23,10 @@ copy "%QT%\bin\Qt5QuickControls2.dll" "Dialogue\Qt5QuickControls2.dll"
 copy "%QT%\bin\Qt5QuickTemplates2.dll" "Dialogue\Qt5QuickTemplates2.dll"
 mkdir Dialogue\Qt\
 mkdir Dialogue\Qt\labs\
-robocopy "%QT%\qml\Qt\labs\settings\" "Dialogue\Qt\labs\" /E
-robocopy "%QT%\qml\QtGraphicalEffects\" "Dialogue\" /E
-robocopy "%QT%\qml\QtQuick\" "Dialogue\" /E
-robocopy "%QT%\qml\QtQuick.2\" "Dialogue\" /E
+robocopy "%QT%\qml\Qt\labs\settings" Dialogue\Qt\labs\ /E
+robocopy "%QT%\qml\QtGraphicalEffects" Dialogue\ /E
+robocopy "%QT%\qml\QtQuick" Dialogue\ /E
+robocopy "%QT%\qml\QtQuick.2" Dialogue\ /E
 
 
 echo Copying project files for archival...
@@ -36,7 +36,7 @@ copy "%project_dir%\Qt License" "Dialogue\Qt License.txt"
 
 echo Copying files for installer...
 mkdir "%project_dir%\installer\windows\x86_64\packages\com.dialogueproject.dialogue\data\"
-robocopy Dialogue\ %project_dir%\installer\windows\x86_64\packages\com.dialogueproject.dialogue\data\ /E
+robocopy Dialogue\ "%project_dir%\installer\windows\x86_64\packages\com.dialogueproject.dialogue\data" /E
 
 echo Packaging portable archive...
 7z a dialogue_%TAG_NAME%_windows_x86_64_portable.zip Dialogue
