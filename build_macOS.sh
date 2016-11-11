@@ -42,7 +42,7 @@ rm -rf obj
 rm -rf qrc
 
 echo "Creating dmg archive..."
-macdeployqt Dialogue.app -dmg
+macdeployqt Dialogue.app --qmldir ../../../../../src -dmg
 mv Dialogue.dmg "Dialogue_${TAG_NAME}.dmg"
 # appdmg json-path Dialogue_${TRAVIS_TAG}.dmg
 

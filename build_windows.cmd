@@ -12,7 +12,7 @@ nmake
 
 echo Packaging...
 cd %project_dir%\build\windows\msvc\x86_64\release\
-windeployqt Dialogue\Dialogue.exe
+windeployqt --qmldir ..\..\..\..\..\src\ Dialogue\Dialogue.exe
 
 rd /s /q Dialogue\moc\
 rd /s /q Dialogue\obj\

@@ -5,6 +5,7 @@ set -o errexit -o nounset
 # Update platform
 echo "Updating platform..."
 sudo -E apt-get -yq --no-install-suggests --no-install-recommends --force-yes install p7zip-full
+sudo -E apt-get -yq --no-install-suggests --no-install-recommends --force-yes install chrpath
 
 # Hold on to current directory
 project_dir=$(pwd)
@@ -41,13 +42,21 @@ rm -rf obj
 rm -rf qrc
 
 echo "Copying files for archival..."
-cp "/usr/local/Qt-5.7.0/lib/libQt5Core.so.5.7.0" "libQt5Core.so"
-cp "/usr/local/Qt-5.7.0/lib/libQt5Gui.so.5.7.0" "libQt5Gui.so"
-cp "/usr/local/Qt-5.7.0/lib/libQt5Svg.so.5.7.0" "libQt5Svg.so"
-cp "/usr/local/Qt-5.7.0/lib/libQt5Widgets.so.5.7.0" "libQt5Widgets.so"
+mkdir platforms
+cp "/usr/local/Qt-5.7.0/plugins/platforms/libqxcb.so" "platforms/libqxcb.so"
+cp "/usr/local/Qt-5.7.0/plugins/platforms/libqminimal.so" "platforms/libqminimal.so"
+cp "/usr/local/Qt-5.7.0/lib/libQt5Core.so.5.7.0" "libQt5Core.so.5"
+cp "/usr/local/Qt-5.7.0/lib/libQt5Gui.so.5.7.0" "libQt5Gui.so.5"
+cp "/usr/local/Qt-5.7.0/lib/libQt5Svg.so.5.7.0" "libQt5Svg.so.5"
+cp "/usr/local/Qt-5.7.0/lib/libQt5DBus.so.5.7.0" "libQt5DBus.so.5"
+cp "/usr/local/Qt-5.7.0/lib/libQt5XcbQpa.so.5.7.0" "libQt5XcbQpa.so.5"
+cp "/usr/local/Qt-5.7.0/lib/libQt5Widgets.so.5.7.0" "libQt5Widgets.so.5"
 cp "${project_dir}/README.md" "README.md"
 cp "${project_dir}/LICENSE" "LICENSE"
 cp "${project_dir}/Qt License" "Qt License"
+
+chrpath -r \$ORIGIN/.. platforms/libqxcb.so
+chrpath -r \$ORIGIN/.. platforms/libqminimal.so
 
 echo "Copying files for installer..."
 cp -R * "${project_dir}/installer/linux/packages/com.dialogueproject.dialogue/data/"

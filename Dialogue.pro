@@ -131,6 +131,19 @@ android {
 
     HEADERS += src/utility/make_unique.h
 
+    win32-g++ {
+      message(MinGW x86)
+
+      debug {
+        message(Debug)
+        DESTDIR = build/windows/mingw/x86/debug/Dialogue/
+      }
+      release {
+        message(Release)
+        DESTDIR = build/windows/mingw/x86/release/Dialogue/
+      }
+    }
+
     win32-msvc2015 {
       contains(QT_ARCH, x86_64) {
         message(MSVC x86_64)
