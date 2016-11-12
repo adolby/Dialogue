@@ -43,6 +43,8 @@ rm -rf qrc
 
 echo "Copying files for archival..."
 mkdir platforms
+mkdir -p Qt/labs/
+
 cp "/usr/local/Qt-5.7.0/plugins/platforms/libqxcb.so" "platforms/libqxcb.so"
 cp "/usr/local/Qt-5.7.0/plugins/platforms/libqminimal.so" "platforms/libqminimal.so"
 
@@ -58,9 +60,9 @@ cp "/usr/local/Qt-5.7.0/lib/libQt5DBus.so.5.7.0" "libQt5DBus.so.5"
 cp "/usr/local/Qt-5.7.0/lib/libQt5XcbQpa.so.5.7.0" "libQt5XcbQpa.so.5"
 
 cp -R "/usr/local/Qt-5.7.0/qml/Qt/labs/settings/" "Qt/labs/"
-cp -R "/usr/local/Qt-5.7.0/qml/Qt/labs/settings/QtGraphicalEffects/" "."
-cp -R "/usr/local/Qt-5.7.0/qml/Qt/labs/settings/QtQuick/" "."
-cp -R "/usr/local/Qt-5.7.0/qml/Qt/labs/settings/QtQuick.2/" "."
+cp -R "/usr/local/Qt-5.7.0/qml/QtGraphicalEffects/" "."
+cp -R "/usr/local/Qt-5.7.0/qml/QtQuick/" "."
+cp -R "/usr/local/Qt-5.7.0/qml/QtQuick.2/" "."
 
 cp "${project_dir}/README.md" "README.md"
 cp "${project_dir}/LICENSE" "LICENSE"
