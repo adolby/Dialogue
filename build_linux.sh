@@ -70,6 +70,8 @@ cp "${project_dir}/Qt License" "Qt License"
 
 chrpath -r \$ORIGIN/.. platforms/libqxcb.so
 chrpath -r \$ORIGIN/.. platforms/libqminimal.so
+chrpath -r \$ORIGIN/../.. QtQuick/Controls.2/libqtquickcontrols2plugin.so
+chrpath -r \$ORIGIN/../.. QtQuick/Templates.2/libqtquicktemplates2plugin.so
 
 echo "Copying files for installer..."
 cp -R * "${project_dir}/installer/linux/packages/com.dialogueproject.dialogue/data/"
