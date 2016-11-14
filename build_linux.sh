@@ -16,7 +16,7 @@ cd /usr/local/
 echo "Downloading Qt files..."
 sudo wget https://github.com/adolby/qt-more-builds/releases/download/5.7/qt-opensource-5.7.0-linux-x86_64.zip
 echo "Extracting Qt files..."
-sudo 7z x qt-opensource-5.7.0-x86_64-linux-gcc6.zip &> /dev/null
+sudo 7z x qt-opensource-5.7.0-linux-x86_64.zip &> /dev/null
 
 # Install Qt Installer Framework
 echo "Installing Qt Installer Framework..."
