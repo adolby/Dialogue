@@ -10,8 +10,6 @@ sudo -E apt-get -yq --no-install-suggests --no-install-recommends --force-yes in
 # Hold on to current directory
 project_dir=$(pwd)
 
-qmake --version
-
 # Get Qt
 echo "Installing Qt..."
 cd ~
@@ -27,13 +25,12 @@ sudo 7z x qt-installer-framework-opensource-2.0.3.zip &> /dev/null
 
 # Add Qt binaries to path
 echo "Adding Qt binaries to path..."
-PATH=~/Qt/5.7.0/bin/:~/QtIFW2.0.3/bin/:${PATH}
-
-qmake --version
+PATH=~/Qt/5.7/gcc_64/bin/:~/QtIFW2.0.3/bin/:${PATH}
 
 # Build Dialogue
 echo "Building Dialogue..."
 cd ${project_dir}
+qmake -v
 qmake -config release
 make -j2
 
@@ -49,24 +46,24 @@ echo "Copying files for archival..."
 mkdir platforms
 mkdir -p Qt/labs/
 
-cp "~/Qt/5.7.0/plugins/platforms/libqxcb.so" "platforms/libqxcb.so"
-cp "~/Qt/5.7.0/plugins/platforms/libqminimal.so" "platforms/libqminimal.so"
+cp "~/Qt/5.7/gcc_64/plugins/platforms/libqxcb.so" "platforms/libqxcb.so"
+cp "~/Qt/5.7/gcc_64/plugins/platforms/libqminimal.so" "platforms/libqminimal.so"
 
-cp "~/Qt/5.7.0/lib/libQt5Core.so.5.7.0" "libQt5Core.so.5"
-cp "~/Qt/5.7.0/lib/libQt5Gui.so.5.7.0" "libQt5Gui.so.5"
-cp "~/Qt/5.7.0/lib/libQt5Svg.so.5.7.0" "libQt5Svg.so.5"
-cp "~/Qt/5.7.0/lib/libQt5Qml.so.5.7.0" "libQt5Qml.so.5"
-cp "~/Qt/5.7.0/lib/libQt5Quick.so.5.7.0" "libQt5Quick.so.5"
-cp "~/Qt/5.7.0/lib/libQt5QuickControls2.so.5.7.0" "libQt5QuickControls2.so.5"
-cp "~/Qt/5.7.0/lib/libQt5QuickTemplates2.so.5.7.0" "libQt5QuickTemplates2.so.5"
-cp "~/Qt/5.7.0/lib/libQt5Network.so.5.7.0" "libQt5Network.so.5"
-cp "~/Qt/5.7.0/lib/libQt5DBus.so.5.7.0" "libQt5DBus.so.5"
-cp "~/Qt/5.7.0/lib/libQt5XcbQpa.so.5.7.0" "libQt5XcbQpa.so.5"
+cp "~/Qt/5.7/gcc_64/lib/libQt5Core.so.5.7.0" "libQt5Core.so.5"
+cp "~/Qt/5.7/gcc_64/lib/libQt5Gui.so.5.7.0" "libQt5Gui.so.5"
+cp "~/Qt/5.7/gcc_64/lib/libQt5Svg.so.5.7.0" "libQt5Svg.so.5"
+cp "~/Qt/5.7/gcc_64/lib/libQt5Qml.so.5.7.0" "libQt5Qml.so.5"
+cp "~/Qt/5.7/gcc_64/lib/libQt5Quick.so.5.7.0" "libQt5Quick.so.5"
+cp "~/Qt/5.7/gcc_64/lib/libQt5QuickControls2.so.5.7.0" "libQt5QuickControls2.so.5"
+cp "~/Qt/5.7/gcc_64/lib/libQt5QuickTemplates2.so.5.7.0" "libQt5QuickTemplates2.so.5"
+cp "~/Qt/5.7/gcc_64/lib/libQt5Network.so.5.7.0" "libQt5Network.so.5"
+cp "~/Qt/5.7/gcc_64/lib/libQt5DBus.so.5.7.0" "libQt5DBus.so.5"
+cp "~/Qt/5.7/gcc_64/lib/libQt5XcbQpa.so.5.7.0" "libQt5XcbQpa.so.5"
 
-cp -R "~/Qt/5.7.0/qml/Qt/labs/settings/" "Qt/labs/"
-cp -R "~/Qt/5.7.0/qml/QtGraphicalEffects/" "."
-cp -R "~/Qt/5.7.0/qml/QtQuick/" "."
-cp -R "~/Qt/5.7.0/qml/QtQuick.2/" "."
+cp -R "~/Qt/5.7/gcc_64/qml/Qt/labs/settings/" "Qt/labs/"
+cp -R "~/Qt/5.7/gcc_64/qml/QtGraphicalEffects/" "."
+cp -R "~/Qt/5.7/gcc_64/qml/QtQuick/" "."
+cp -R "~/Qt/5.7/gcc_64/qml/QtQuick.2/" "."
 
 cp "${project_dir}/README.md" "README.md"
 cp "${project_dir}/LICENSE" "LICENSE"
