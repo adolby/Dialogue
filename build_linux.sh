@@ -6,8 +6,6 @@ set -o errexit -o nounset
 echo "Updating platform..."
 sudo -E apt-get -yq --no-install-suggests --no-install-recommends --force-yes install p7zip-full
 sudo -E apt-get -yq --no-install-suggests --no-install-recommends --force-yes install chrpath
-sudo -E apt-get -yq --no-install-suggests --no-install-recommends --force-yes install libicu57
-sudo -E apt-get -yq --no-install-suggests --no-install-recommends --force-yes install libicu-dev
 
 # Hold on to current directory
 project_dir=$(pwd)
@@ -16,7 +14,7 @@ project_dir=$(pwd)
 echo "Installing Qt..."
 cd /usr/local/
 echo "Downloading Qt files..."
-sudo wget https://github.com/adolby/qt-more-builds/releases/download/5.7/qt-opensource-5.7.0-x86_64-linux-gcc6.zip
+sudo wget https://github.com/adolby/qt-more-builds/releases/download/5.7/qt-opensource-5.7.0-linux-x86_64.zip
 echo "Extracting Qt files..."
 sudo 7z x qt-opensource-5.7.0-x86_64-linux-gcc6.zip &> /dev/null
 
