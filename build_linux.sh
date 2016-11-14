@@ -6,6 +6,8 @@ set -o errexit -o nounset
 echo "Updating platform..."
 sudo -E apt-get -yq --no-install-suggests --no-install-recommends --force-yes install p7zip-full
 sudo -E apt-get -yq --no-install-suggests --no-install-recommends --force-yes install chrpath
+sudo -E apt-get -yq --no-install-suggests --no-install-recommends --force-yes install libicu57
+sudo -E apt-get -yq --no-install-suggests --no-install-recommends --force-yes install libicu-dev
 
 # Hold on to current directory
 project_dir=$(pwd)
