@@ -26,9 +26,7 @@ sudo 7z x qt-installer-framework-opensource-2.0.3-linux.7z &> /dev/null
 
 # Add Qt binaries to path
 echo "Adding Qt binaries to path..."
-PATH=${qt_install_dir}/Qt/5.7/gcc_64/bin/:${qt_install_dir}/QtIFW2.0.3/bin/:${PATH}
-echo "New PATH:"
-echo ${PATH}
+PATH=${qt_install_dir}/Qt/5.7/gcc_64/bin/:${qt_install_dir}/Qt/QtIFW2.0.3/bin/:${PATH}
 
 # Build Dialogue
 echo "Building Dialogue..."
