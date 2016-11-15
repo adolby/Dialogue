@@ -44,6 +44,11 @@ rm -rf obj
 rm -rf qrc
 
 echo "Copying files for archival..."
+
+cp "/usr/lib/x86_64-linux-gnu/libicui18n.so.52.1" "libicui18n.so.52"
+cp "/usr/lib/x86_64-linux-gnu/libicuuc.so.52.1" "libicuuc.so.52"
+cp "/usr/lib/x86_64-linux-gnu/libicudata.so.52.1" "libicudata.so.52"
+
 mkdir platforms
 mkdir -p Qt/labs/
 
