@@ -14,9 +14,9 @@ project_dir=$(pwd)
 echo "Installing Qt..."
 cd ~
 echo "Downloading Qt files..."
-sudo wget https://github.com/adolby/qt-more-builds/releases/download/5.7/qt-opensource-5.7.0-linux-x86_64.zip
+sudo wget https://github.com/adolby/qt-more-builds/releases/download/5.7/qt-opensource-5.7.0-linux-x86_64-gcc6.7z
 echo "Extracting Qt files..."
-sudo 7z x qt-opensource-5.7.0-linux-x86_64.zip &> /dev/null
+sudo 7z x qt-opensource-5.7.0-linux-x86_64-gcc6.7z &> /dev/null
 
 # Install Qt Installer Framework
 echo "Installing Qt Installer Framework..."
