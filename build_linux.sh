@@ -21,7 +21,7 @@ sudo 7z x qt-opensource-5.7.0-linux-x86_64-gcc6.7z &> /dev/null
 
 # Install Qt Installer Framework
 echo "Installing Qt Installer Framework..."
-sudo wget https://github.com/adolby/qt-more-builds/releases/download/qt-ifw-2.0.3/qt-installer-framework-opensource-2.0.3.zip
+sudo wget https://github.com/adolby/qt-more-builds/releases/download/qt-ifw-2.0.3/qt-installer-framework-opensource-2.0.3-linux.7z
 sudo 7z x qt-installer-framework-opensource-2.0.3-linux.7z &> /dev/null
 
 # Add Qt binaries to path
