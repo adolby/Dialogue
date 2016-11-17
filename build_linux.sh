@@ -32,7 +32,7 @@ PATH=${qt_install_dir}/Qt/5.7/gcc_64/bin/:${qt_install_dir}/Qt/QtIFW2.0.3/bin/:$
 echo "Building Dialogue..."
 cd ${project_dir}
 qmake -v
-qmake -config release
+qmake -config release -spec linux-g++-64
 make
 
 # Package Dialogue
