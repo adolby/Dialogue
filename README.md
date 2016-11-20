@@ -10,13 +10,11 @@ Dialogue is an open-source peer-to-peer chat app. Dialogue doesn't keep user nam
 To install Dialogue on Windows or Linux, run the installer executable or extract the files from the Dialogue archive. To install Dialogue on macOS, extract the disk image archive, then mount the disk image. Drag Dialogue.app to your Applications folder. Once the install files are copied, run the Dialogue executable.
 
 ###Solving Windows missing DLL error
-If you receive an error indicating a missing msvcp140.dll or vcruntime140.dll, you'll need to install the Visual C++ 2015 Redistributable (x64).
+If you receive an error indicating a missing msvcp140.dll, vcruntime140.dll, or other DLL files when you run Dialogue, you'll need to install the Visual C++ 2015 Redistributable (x64).
 
-If you are using the Dialogue installer, it is located in your install folder (default is C:\Program Files\Dialogue\). Its file name is vcredist_x64.exe.
+The Visual C++ Redistributable installer is located where you installed Dialogue (default directory for the installer is C:\Program Files\Dialogue\). Its file name is vcredist_x64.exe.
 
-If you are using the Dialogue portable version, you can download it from https://www.microsoft.com/en-us/download/details.aspx?id=48145. Choose file vc_redist.x64.exe.
-
-Run the redistributable installer, and you should then be able to start Dialogue.
+Run the Visual C++ Redistributable installer, and you should then be able to start Dialogue.
 
 ###Using Dialogue
 Enter the IP address of the person you want to chat with, then wait for the Connection Status to change to Connected. Next, select the Conversation button to go to the conversation page. Enter text into the message field and then select the Send button to send your message.
