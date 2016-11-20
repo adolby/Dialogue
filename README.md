@@ -1,4 +1,4 @@
-#Dialogue
+# Dialogue
 
 Dialogue is an open-source peer-to-peer chat app. Dialogue doesn't keep user name information or logs. It is currently a work in progress. I can't recommend using it until secure connections (SSL) are supported, which is the next anticipated feature.
 
