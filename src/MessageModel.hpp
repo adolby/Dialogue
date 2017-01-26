@@ -1,7 +1,6 @@
-#ifndef MESSAGEMODEL_HPP_
-#define MESSAGEMODEL_HPP_
+#ifndef DIALOGUE_MESSAGEMODEL_HPP_
+#define DIALOGUE_MESSAGEMODEL_HPP_
 
-#include "utility/pimpl.h"
 #include <QAbstractListModel>
 #include <QHash>
 #include <QString>
@@ -22,8 +21,7 @@ class Message {
   QString m_recipient;
 };
 
-class MessageModel : public QAbstractListModel
-{
+class MessageModel : public QAbstractListModel {
   Q_OBJECT
 
  public:
@@ -50,4 +48,4 @@ class MessageModel : public QAbstractListModel
   std::deque<Message> m_messages;
 };
 
-#endif // MESSAGEMODEL_HPP_
+#endif // DIALOGUE_MESSAGEMODEL_HPP_

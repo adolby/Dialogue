@@ -1,5 +1,5 @@
-#ifndef SSLSERVER_HPP_
-#define SSLSERVER_HPP_
+#ifndef DIALOGUE_SSLSERVER_HPP_
+#define DIALOGUE_SSLSERVER_HPP_
 
 #include <QTcpServer>
 
@@ -13,4 +13,4 @@ class SslServer : public QTcpServer {
   void ready();
 };
 
-#endif // SSLSERVER_HPP_
+#endif // DIALOGUE_SSLSERVER_HPP_

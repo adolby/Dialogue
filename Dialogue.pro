@@ -27,18 +27,16 @@ CONFIG(release, debug|release) {
 
 SOURCES += \
   src/main.cpp \
-  src/SslServer.cpp \
   src/Dialogue.cpp \
   src/Connection.cpp \
+  src/SslServer.cpp \
   src/ConnectionInterface.cpp \
   src/MessageModel.cpp
 
 HEADERS += \
-  src/utility/pimpl.h \
-  src/utility/pimpl_impl.h \
-  src/SslServer.hpp \
   src/Dialogue.hpp \
   src/Connection.hpp \
+  src/SslServer.hpp \
   src/ConnectionInterface.hpp \
   src/MessageModel.hpp
 
@@ -46,7 +44,7 @@ HEADERS += \
 android {
   message(Android)
 
-  HEADERS += src/utility/make_unique.h
+  HEADERS +=
 
   ANDROID_PACKAGE_SOURCE_DIR = resources/android/
 
@@ -129,7 +127,7 @@ android {
   win32 {
     message(Windows)
 
-    HEADERS += src/utility/make_unique.h
+    HEADERS +=
 
     win32-g++ {
       message(MinGW x86)

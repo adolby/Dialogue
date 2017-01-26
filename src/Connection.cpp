@@ -5,24 +5,21 @@
 #include <QStringRef>
 #include <QStringBuilder>
 
-#if defined(Q_OS_ANDROID)
-#else
-#include "utility/pimpl_impl.h"
-#endif
+const auto CONNECTION_MODE_TIMEOUT = 5000;
+const auto RECONNECT_TIMEOUT = 500;
+const auto DEFAULT_PORT_NUMBER = 28710;
 
-const int CONNECTION_MODE_TIMEOUT = 5000;
-const int RECONNECT_TIMEOUT = 500;
-const int DEFAULT_PORT_NUMBER = 28710;
-enum ConnectionMode {ClientMode = 0, ServerMode = 1};
+enum ConnectionMode {
+  ClientMode = 0,
+  ServerMode = 1
+};
 
 class Connection::ConnectionPrivate {
  public:
-  ConnectionPrivate();
+  explicit ConnectionPrivate();
   virtual ~ConnectionPrivate();
 
   void destroySocket();
-
-  QThread* mainThread;
 
   QTcpSocket* socket;
   QTcpServer* server;
@@ -39,15 +36,14 @@ class Connection::ConnectionPrivate {
 Connection::ConnectionPrivate::ConnectionPrivate()
   : socket{Q_NULLPTR}, server{Q_NULLPTR}, toggleModeTimer{Q_NULLPTR},
     reconnectTimer{Q_NULLPTR}, ip{QString{"0.0.0.0"}},
-    port{DEFAULT_PORT_NUMBER}, mode{ServerMode}
-  {}
+    port{DEFAULT_PORT_NUMBER}, mode{ServerMode} {
+}
 
-Connection::ConnectionPrivate::~ConnectionPrivate() {}
+Connection::ConnectionPrivate::~ConnectionPrivate() {
+}
 
-void Connection::ConnectionPrivate::destroySocket()
-{
-  if (socket)
-  {
+void Connection::ConnectionPrivate::destroySocket() {
+  if (socket) {
     socket->abort();
     socket->setParent(Q_NULLPTR);
   }
@@ -56,14 +52,7 @@ void Connection::ConnectionPrivate::destroySocket()
 }
 
 Connection::Connection(QObject* parent)
-  : QObject{parent}
-#if defined(Q_OS_ANDROID)
-    , m{new ConnectionPrivate{}}
-#endif
-{
-  // Grab pointer to main thread for cleanup
-  m->mainThread = this->thread();
-
+  : QObject{parent}, m{new ConnectionPrivate{}} {
   m->socket = new QTcpSocket{this};
 
   connect(m->socket, &QTcpSocket::connected,
@@ -92,38 +81,26 @@ Connection::Connection(QObject* parent)
           this, &Connection::connectToPeer);
 }
 
-Connection::~Connection()
-{
-  // Move self back to main thread for proper cleanup. This is a no-op if
-  // Connection instances aren't used in a multithreaded environment.
-  this->moveToThread(m->mainThread);
-
+Connection::~Connection() {
   m->toggleModeTimer->stop();
   m->reconnectTimer->stop();
 
-#if defined(Q_OS_ANDROID)
   delete m;
-#endif
 }
 
-void Connection::sendMessage(const QString& msg)
-{
-  if (!msg.isEmpty() && m->socket->state() == QAbstractSocket::ConnectedState)
-  {
-    auto errorCheck = m->socket->write(msg.toUtf8());
+void Connection::sendMessage(const QString& msg) {
+  if (!msg.isEmpty() && m->socket->state() == QAbstractSocket::ConnectedState) {
+    const qint64 errorCheck = m->socket->write(msg.toUtf8());
     m->socket->flush();
 
-    if (errorCheck != -1)
-    {
+    if (errorCheck != -1) {
       emit outgoingMessage(msg, "Contact");
     }
   }
 }
 
-void Connection::ip(const QString& ip)
-{
-  if (ip != m->ip && !ip.isEmpty())
-  {
+void Connection::ip(const QString& ip) {
+  if (ip != m->ip && !ip.isEmpty()) {
     m->ip = ip;
     m->socket->abort();
 
@@ -131,10 +108,8 @@ void Connection::ip(const QString& ip)
   }
 }
 
-void Connection::port(const int port)
-{
-  if (port != m->port && port > 0)
-  {
+void Connection::port(const int port) {
+  if (port != m->port && port > 0) {
     m->port = port;
     m->socket->abort();
 
@@ -142,29 +117,23 @@ void Connection::port(const int port)
   }
 }
 
-void Connection::toggleConnectionMode()
-{
-  if (!m->toggleModeTimer->isActive())
-  {
+void Connection::toggleConnectionMode() {
+  if (!m->toggleModeTimer->isActive()) {
     m->toggleModeTimer->start(CONNECTION_MODE_TIMEOUT);
   }
 
-  if (QAbstractSocket::UnconnectedState == m->socket->state())
-  {
-    if (m->connectionAttempts > 10)
-    {
+  if (QAbstractSocket::UnconnectedState == m->socket->state()) {
+    if (m->connectionAttempts > 10) {
       m->toggleModeTimer->stop();
       m->toggleModeTimer->start(CONNECTION_MODE_TIMEOUT + 2500);
     }
-    else if (m->connectionAttempts > 20)
-    {
+    else if (m->connectionAttempts > 20) {
       m->toggleModeTimer->stop();
       m->toggleModeTimer->start(CONNECTION_MODE_TIMEOUT);
       m->connectionAttempts = 0;
     }
 
-    if (ConnectionMode::ServerMode == m->mode)
-    {
+    if (ConnectionMode::ServerMode == m->mode) {
       m->mode = ConnectionMode::ClientMode;
 
       m->server->close();
@@ -175,24 +144,22 @@ void Connection::toggleConnectionMode()
 
       m->reconnectTimer->start(RECONNECT_TIMEOUT);
     }
-    else if (ConnectionMode::ClientMode == m->mode)
-    {
+    else if (ConnectionMode::ClientMode == m->mode) {
       m->mode = ConnectionMode::ServerMode;
 
       // Stop client mode reconnect timer
       m->reconnectTimer->stop();
 
-      if (m->port > 0)
-      {
+      if (m->port > 0) {
         m->socket->abort();
 
-        bool listeningCheck = m->server->listen(QHostAddress::Any, m->port);
+        const bool listeningCheck = m->server->listen(QHostAddress::Any,
+                                                      m->port);
 
         emit sendStatus();
       }
     }
-    else
-    {
+    else {
       emit displayError(QStringLiteral("Can't connect: No such connection "
                                        "mode."));
     }
@@ -201,49 +168,41 @@ void Connection::toggleConnectionMode()
   }
 }
 
-void Connection::connectToPeer()
-{
+void Connection::connectToPeer() {
   if (!m->ip.isEmpty() && m->port > 0 &&
-      QAbstractSocket::UnconnectedState == m->socket->state())
-  {
+      QAbstractSocket::UnconnectedState == m->socket->state()) {
     m->socket->connectToHost(m->ip, m->port);
     emit sendStatus();
   }
 }
 
-void Connection::socketConnected()
-{
+void Connection::socketConnected() {
   m->connectionAttempts = 0;
 
   emit sendStatus();
 }
 
-void Connection::socketError()
-{
+void Connection::socketError() {
   emit displayError(QStringLiteral("Couldn't connect. Reconnecting..."));
 
   sendStatus();
 }
 
-void Connection::socketDisconnected()
-{
+void Connection::socketDisconnected() {
   sendStatus();
 }
 
-void Connection::socketReadyRead()
-{
+void Connection::socketReadyRead() {
   const auto msg = m->socket->readAll();
 
   emit incomingMessage(msg);
 }
 
-void Connection::socketBytesWritten(const qint64 numberOfBytes)
-{
+void Connection::socketBytesWritten(const qint64 numberOfBytes) {
   Q_UNUSED(numberOfBytes);
 }
 
-void Connection::serverNewConnection()
-{
+void Connection::serverNewConnection() {
   m->destroySocket();
 
   // Grab the server socket
@@ -257,8 +216,7 @@ void Connection::serverNewConnection()
   emit sendStatus();
 }
 
-void Connection::connectSocket()
-{
+void Connection::connectSocket() {
   connect(m->socket, &QTcpSocket::connected,
           this, &Connection::socketConnected);
   connect(m->socket, &QTcpSocket::disconnected,
@@ -269,33 +227,27 @@ void Connection::connectSocket()
           this, &Connection::socketBytesWritten);
 }
 
-void Connection::sendStatus()
-{
-  auto reconnectTime = static_cast<int>(m->toggleModeTimer->remainingTime() /
-                                        1000);
+void Connection::sendStatus() {
+  const auto reconnectTime =
+    static_cast<int>(m->toggleModeTimer->remainingTime() / 1000);
 
-  QString state = QString{"Not connected. Trying again in "} %
+  QString state = QStringLiteral("Not connected. Trying again in ") %
                   QString{"%1 "}.arg(reconnectTime) %
-                  QString{"seconds..."};
+                  QStringLiteral("seconds...");
 
-  if (QAbstractSocket::HostLookupState == m->socket->state())
-  {
+  if (QAbstractSocket::HostLookupState == m->socket->state()) {
     state = QString{"Looking up host..."};
   }
-  else if (QAbstractSocket::ConnectingState == m->socket->state())
-  {
+  else if (QAbstractSocket::ConnectingState == m->socket->state()) {
     state = QString{"Connecting to peer as client..."};
   }
-  else if (m->server->isListening())
-  {
+  else if (m->server->isListening()) {
     state = QString{"Connecting to peer as server..."};
   }
-  else if (QAbstractSocket::ConnectedState == m->socket->state())
-  {
+  else if (QAbstractSocket::ConnectedState == m->socket->state()) {
     state = QString{"Connected"};
   }
-  else if (QAbstractSocket::ClosingState == m->socket->state())
-  {
+  else if (QAbstractSocket::ClosingState == m->socket->state()) {
     state = QString{"Closing connection..."};
   }
 

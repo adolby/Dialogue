@@ -1,15 +1,9 @@
-#ifndef CONNECTION_HPP_
-#define CONNECTION_HPP_
+#ifndef DIALOGUE_CONNECTION_HPP_
+#define DIALOGUE_CONNECTION_HPP_
 
 #include <QObject>
 #include <QThread>
 #include <QString>
-
-#if defined(Q_OS_ANDROID)
-
-#else
-#include "utility/pimpl.h"
-#endif
 
 class Connection : public QObject {
   Q_OBJECT
@@ -44,11 +38,7 @@ class Connection : public QObject {
   void sendStatus();
 
   class ConnectionPrivate;
-#if defined (Q_OS_ANDROID)
   ConnectionPrivate* m;
-#else
-  pimpl<ConnectionPrivate> m;
-#endif
 };
 
-#endif // CONNECTION_HPP_
+#endif // DIALOGUE_CONNECTION_HPP_

@@ -12,7 +12,7 @@ int main(int argc, char* argv[])
 
   Dialogue dialogue{};
 
-  auto retval = app.exec();
+  const auto retval = app.exec();
 
   return retval;
 }

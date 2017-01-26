@@ -1,5 +1,5 @@
-#ifndef CONNECTIONDATA_HPP_
-#define CONNECTIONDATA_HPP_
+#ifndef DIALOGUE_CONNECTIONDATA_HPP_
+#define DIALOGUE_CONNECTIONDATA_HPP_
 
 #include <QObject>
 #include <QString>
@@ -25,4 +25,4 @@ class ConnectionInterface : public QObject {
   QString m_status;
 };
 
-#endif // CONNECTIONDATA_HPP_
+#endif // DIALOGUE_CONNECTIONDATA_HPP_
