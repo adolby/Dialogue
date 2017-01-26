@@ -33,9 +33,9 @@ Dialogue::Dialogue(QObject* parent)
   m->messageModel = new MessageModel{this};
   m->connectionThread = new QThread{this};
 
-  m->engine.rootContext()->setContextProperty("messageModel",
+  m->engine.rootContext()->setContextProperty(QStringLiteral("messageModel"),
                                               m->messageModel);
-  m->engine.rootContext()->setContextProperty("socketConnection",
+  m->engine.rootContext()->setContextProperty(QStringLiteral("socketConnection"),
                                               m->connectionInterface);
 
   m->engine.load(QUrl(QStringLiteral("qrc:/main.qml")));

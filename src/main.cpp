@@ -6,9 +6,9 @@ int main(int argc, char* argv[])
 {
   QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
   QGuiApplication app{argc, argv};
-  app.setOrganizationName("The Dialogue Project");
-  app.setOrganizationDomain("andrewdolby.com");
-  app.setApplicationName("Dialogue");
+  app.setOrganizationName(QStringLiteral("The Dialogue Project"));
+  app.setOrganizationDomain(QStringLiteral("andrewdolby.com"));
+  app.setApplicationName(QStringLiteral("Dialogue"));
 
   Dialogue dialogue{};
 

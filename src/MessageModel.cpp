@@ -33,7 +33,6 @@ void MessageModel::addMessage(const QString& msgText,
 
 int MessageModel::rowCount(const QModelIndex& parent) const {
   Q_UNUSED(parent);
-
   return static_cast<int>(m_messages.size());
 }
 
@@ -70,7 +69,7 @@ QHash<int, QByteArray> MessageModel::roleNames() const {
 }
 
 void MessageModel::addMessage(const Message& msg) {
-  beginInsertRows(QModelIndex(), 0, 0);
+  beginInsertRows(QModelIndex{}, 0, 0);
   m_messages.push_front(msg);
   endInsertRows();
 }

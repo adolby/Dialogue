@@ -1,7 +1,7 @@
 #include "ConnectionInterface.hpp"
 
 ConnectionInterface::ConnectionInterface(QObject* parent)
-  : QObject{parent}, m_status{"Not connected"} {
+  : QObject{parent}, m_status{QStringLiteral("Not connected")} {
 }
 
 QString ConnectionInterface::status() const {
@@ -14,7 +14,7 @@ void ConnectionInterface::updateStatus(const QString& status) {
 }
 
 void ConnectionInterface::incomingMessage(const QString& msgText) {
-  emit message(msgText, "Me");
+  emit message(msgText, QStringLiteral("Me"));
 }
 
 void ConnectionInterface::outgoingMessage(const QString& msgText,

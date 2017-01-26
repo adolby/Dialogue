@@ -5,9 +5,9 @@
 #include <QStringRef>
 #include <QStringBuilder>
 
-const auto CONNECTION_MODE_TIMEOUT = 5000;
-const auto RECONNECT_TIMEOUT = 500;
-const auto DEFAULT_PORT_NUMBER = 28710;
+const int kConnectionModeTimeout = 5000;
+const int kReconnectTimeout = 500;
+const int kDefaultPortNumber = 28710;
 
 enum ConnectionMode {
   ClientMode = 0,
@@ -35,8 +35,8 @@ class Connection::ConnectionPrivate {
 
 Connection::ConnectionPrivate::ConnectionPrivate()
   : socket{Q_NULLPTR}, server{Q_NULLPTR}, toggleModeTimer{Q_NULLPTR},
-    reconnectTimer{Q_NULLPTR}, ip{QString{"0.0.0.0"}},
-    port{DEFAULT_PORT_NUMBER}, mode{ServerMode} {
+    reconnectTimer{Q_NULLPTR}, connectionAttempts{0},
+    ip{QStringLiteral("0.0.0.0")}, port{kDefaultPortNumber}, mode{ServerMode} {
 }
 
 Connection::ConnectionPrivate::~ConnectionPrivate() {
@@ -94,7 +94,7 @@ void Connection::sendMessage(const QString& msg) {
     m->socket->flush();
 
     if (errorCheck != -1) {
-      emit outgoingMessage(msg, "Contact");
+      emit outgoingMessage(msg, QStringLiteral("Contact"));
     }
   }
 }
@@ -103,7 +103,6 @@ void Connection::ip(const QString& ip) {
   if (ip != m->ip && !ip.isEmpty()) {
     m->ip = ip;
     m->socket->abort();
-
     toggleConnectionMode();
   }
 }
@@ -112,24 +111,23 @@ void Connection::port(const int port) {
   if (port != m->port && port > 0) {
     m->port = port;
     m->socket->abort();
-
     toggleConnectionMode();
   }
 }
 
 void Connection::toggleConnectionMode() {
   if (!m->toggleModeTimer->isActive()) {
-    m->toggleModeTimer->start(CONNECTION_MODE_TIMEOUT);
+    m->toggleModeTimer->start(kConnectionModeTimeout);
   }
 
   if (QAbstractSocket::UnconnectedState == m->socket->state()) {
     if (m->connectionAttempts > 10) {
       m->toggleModeTimer->stop();
-      m->toggleModeTimer->start(CONNECTION_MODE_TIMEOUT + 2500);
+      m->toggleModeTimer->start(kConnectionModeTimeout + 2500);
     }
     else if (m->connectionAttempts > 20) {
       m->toggleModeTimer->stop();
-      m->toggleModeTimer->start(CONNECTION_MODE_TIMEOUT);
+      m->toggleModeTimer->start(kConnectionModeTimeout);
       m->connectionAttempts = 0;
     }
 
@@ -142,7 +140,7 @@ void Connection::toggleConnectionMode() {
       m->socket = new QTcpSocket{this};
       connectSocket();
 
-      m->reconnectTimer->start(RECONNECT_TIMEOUT);
+      m->reconnectTimer->start(kReconnectTimeout);
     }
     else if (ConnectionMode::ClientMode == m->mode) {
       m->mode = ConnectionMode::ServerMode;
@@ -178,13 +176,11 @@ void Connection::connectToPeer() {
 
 void Connection::socketConnected() {
   m->connectionAttempts = 0;
-
   emit sendStatus();
 }
 
 void Connection::socketError() {
   emit displayError(QStringLiteral("Couldn't connect. Reconnecting..."));
-
   sendStatus();
 }
 
@@ -194,7 +190,6 @@ void Connection::socketDisconnected() {
 
 void Connection::socketReadyRead() {
   const auto msg = m->socket->readAll();
-
   emit incomingMessage(msg);
 }
 
@@ -236,19 +231,19 @@ void Connection::sendStatus() {
                   QStringLiteral("seconds...");
 
   if (QAbstractSocket::HostLookupState == m->socket->state()) {
-    state = QString{"Looking up host..."};
+    state = QStringLiteral("Looking up host...");
   }
   else if (QAbstractSocket::ConnectingState == m->socket->state()) {
-    state = QString{"Connecting to peer as client..."};
+    state = QStringLiteral("Connecting to peer as client...");
   }
   else if (m->server->isListening()) {
-    state = QString{"Connecting to peer as server..."};
+    state = QStringLiteral("Connecting to peer as server...");
   }
   else if (QAbstractSocket::ConnectedState == m->socket->state()) {
-    state = QString{"Connected"};
+    state = QStringLiteral("Connected");
   }
   else if (QAbstractSocket::ClosingState == m->socket->state()) {
-    state = QString{"Closing connection..."};
+    state = QStringLiteral("Closing connection...");
   }
 
   emit updateStatus(state);
