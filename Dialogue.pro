@@ -4,7 +4,7 @@ TARGET = Dialogue
 
 TEMPLATE = app
 
-CONFIG += c++14
+CONFIG += c++11
 
 RESOURCES += src/qml.qrc
 
@@ -31,14 +31,16 @@ SOURCES += \
   src/Connection.cpp \
   src/SslServer.cpp \
   src/ConnectionInterface.cpp \
-  src/MessageModel.cpp
+  src/MessageModel.cpp \
+  src/Thread.cpp
 
 HEADERS += \
   src/Dialogue.hpp \
   src/Connection.hpp \
   src/SslServer.hpp \
   src/ConnectionInterface.hpp \
-  src/MessageModel.hpp
+  src/MessageModel.hpp \
+  src/Thread.hpp
 
 # Platform-specific configuration
 android {

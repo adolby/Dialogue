@@ -1,7 +1,7 @@
 import QtQuick 2.7
-import QtQuick.Controls 2.0
+import QtQuick.Controls 2.1
 import QtQuick.Controls.Styles 1.4
-import QtQuick.Layouts 1.0
+import QtQuick.Layouts 1.3
 
 Page {
   id: connectionPage
@@ -19,7 +19,8 @@ Page {
       anchors.right: parent.right
       anchors.rightMargin: 10
       anchors.verticalCenter: parent.verticalCenter
-      onClicked: connectionPage.StackView.view.push("qrc:/ConversationPage.qml", {})
+      onClicked: connectionPage.StackView.view.push("qrc:/ConversationPage.qml",
+                                                    {})
     }
   }
 
@@ -77,7 +78,9 @@ Page {
         Label {
           text: socketConnection.status
           font.pixelSize: 18
-          color: socketConnection.status === "Connected" ? "#4CAF50" : "#3F51B5"
+          color: socketConnection.status === qsTr("Connected") ?
+                                             "#4CAF50" :
+                                             "#3F51B5"
         }
       }
     }

@@ -2,78 +2,81 @@
 #include "MessageModel.hpp"
 #include "ConnectionInterface.hpp"
 #include "Connection.hpp"
+#include "Thread.hpp"
 #include <QQmlContext>
 #include <QQmlApplicationEngine>
 #include <QQuickWindow>
 
-class Dialogue::DialoguePrivate {
+class DialoguePrivate {
+  Q_DISABLE_COPY(DialoguePrivate)
+
  public:
-  explicit DialoguePrivate();
-  virtual ~DialoguePrivate();
+  explicit DialoguePrivate(Dialogue* parent);
 
   QQmlApplicationEngine engine;
-  Connection* connection;
   ConnectionInterface* connectionInterface;
   MessageModel* messageModel;
-  QThread* connectionThread;
+
+  Connection connection;
+  Thread connectionThread;
 };
 
-Dialogue::DialoguePrivate::DialoguePrivate()
-  : connection{Q_NULLPTR}, connectionInterface{Q_NULLPTR},
-    messageModel{Q_NULLPTR}, connectionThread{Q_NULLPTR} {
-}
-
-Dialogue::DialoguePrivate::~DialoguePrivate() {
+DialoguePrivate::DialoguePrivate(Dialogue* parent)
+  : connectionInterface{new ConnectionInterface{parent}},
+    messageModel{new MessageModel{parent}},
+    connectionThread{parent} {
 }
 
 Dialogue::Dialogue(QObject* parent)
-  : QObject{parent}, m{new DialoguePrivate{}} {
-  m->connection = new Connection{};
-  m->connectionInterface = new ConnectionInterface{this};
-  m->messageModel = new MessageModel{this};
-  m->connectionThread = new QThread{this};
+  : QObject{parent}, d_ptr{new DialoguePrivate{this}} {
+  Q_D(Dialogue);
 
-  m->engine.rootContext()->setContextProperty(QStringLiteral("messageModel"),
-                                              m->messageModel);
-  m->engine.rootContext()->setContextProperty(QStringLiteral("socketConnection"),
-                                              m->connectionInterface);
+  d->engine.rootContext()->setContextProperty(QStringLiteral("messageModel"),
+                                              d->messageModel);
+  d->engine.rootContext()->setContextProperty(QStringLiteral("socketConnection"),
+                                              d->connectionInterface);
 
-  m->engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+  d->engine.load(QUrl{QStringLiteral("qrc:/main.qml")});
 
-  auto root = m->engine.rootObjects().first();
+  auto root = d->engine.rootObjects().first();
   auto parentWindow = qobject_cast<QQuickWindow*>(root);
 
+  connect(&d->connectionThread, &QThread::finished,
+          this, &Dialogue::cleanup,
+          Qt::DirectConnection);
+
   connect(parentWindow, SIGNAL(message(QString)),
-          m->connection, SLOT(sendMessage(QString)));
+          &d->connection, SLOT(sendMessage(QString)),
+          Qt::QueuedConnection);
   connect(parentWindow, SIGNAL(ip(QString)),
-          m->connection, SLOT(ip(QString)));
+          &d->connection, SLOT(ip(QString)),
+          Qt::QueuedConnection);
   connect(parentWindow, SIGNAL(port(int)),
-          m->connection, SLOT(port(int)));
+          &d->connection, SLOT(port(int)),
+          Qt::QueuedConnection);
 
-  connect(m->connection, &Connection::updateStatus,
-          m->connectionInterface, &ConnectionInterface::updateStatus);
-  connect(m->connection, &Connection::incomingMessage,
-          m->connectionInterface, &ConnectionInterface::incomingMessage);
-  connect(m->connection, &Connection::outgoingMessage,
-          m->connectionInterface, &ConnectionInterface::outgoingMessage);
+  connect(&d->connection, &Connection::updateStatus,
+          d->connectionInterface, &ConnectionInterface::updateStatus);
+  connect(&d->connection, &Connection::incomingMessage,
+          d->connectionInterface, &ConnectionInterface::incomingMessage);
+  connect(&d->connection, &Connection::outgoingMessage,
+          d->connectionInterface, &ConnectionInterface::outgoingMessage);
 
-  connect(m->connectionInterface,
+  connect(d->connectionInterface,
           &ConnectionInterface::message,
-          m->messageModel,
-          QOverload<const QString&, const QString&>::of(&MessageModel::addMessage));
+          d->messageModel,
+          QOverload<const QString&, const QString&>::
+            of(&MessageModel::addMessage));
 
-  m->connection->moveToThread(m->connectionThread);
-  m->connectionThread->start();
+  d->connection.moveToThread(&d->connectionThread);
+  d->connectionThread.start();
 }
 
 Dialogue::~Dialogue() {
-  m->connectionThread->quit();
-  auto timedOut = !m->connectionThread->wait(2000);
+}
 
-  // If the thread couldn't quit within the timeout, terminate it
-  if (timedOut) {
-    m->connectionThread->terminate();
-  }
+void Dialogue::cleanup() {
+  Q_D(Dialogue);
 
-  delete m;
+  d->connection.moveToThread(this->thread());
 }

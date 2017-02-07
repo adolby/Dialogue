@@ -31,7 +31,7 @@ class MessageModel : public QAbstractListModel {
     MessageTextRole = Qt::UserRole
   };
 
-  MessageModel(QObject* parent = Q_NULLPTR);
+  explicit MessageModel(QObject* parent = Q_NULLPTR);
 
   int rowCount(const QModelIndex& parent = QModelIndex()) const;
   QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;

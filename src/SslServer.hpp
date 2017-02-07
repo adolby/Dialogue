@@ -2,12 +2,17 @@
 #define DIALOGUE_SSLSERVER_HPP_
 
 #include <QTcpServer>
+#include <QObject>
 
 class SslServer : public QTcpServer {
- public:
-  SslServer(QObject* parent = Q_NULLPTR);
+  Q_OBJECT
 
-  void incomingConnection(qintptr socketDescriptor);
+ public:
+  explicit SslServer(QObject* parent = Q_NULLPTR);
+  ~SslServer();
+
+ protected:
+  void incomingConnection(qintptr socketDescriptor) override final;
 
  public slots:
   void ready();

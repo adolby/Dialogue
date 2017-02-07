@@ -2,11 +2,14 @@
 #define DIALOGUE_CONNECTION_HPP_
 
 #include <QObject>
-#include <QThread>
 #include <QString>
+
+class ConnectionPrivate;
 
 class Connection : public QObject {
   Q_OBJECT
+  Q_DECLARE_PRIVATE(Connection)
+  QScopedPointer<ConnectionPrivate> const d_ptr;
 
  public:
   explicit Connection(QObject* parent = Q_NULLPTR);
@@ -17,6 +20,10 @@ class Connection : public QObject {
   void incomingMessage(const QString& msg);
   void outgoingMessage(const QString& msg, const QString& recipient);
   void displayError(const QString& errorMsg);
+  void startToggleModeTimer(const int msecs);
+  void stopToggleModeTimer();
+  void startReconnectTimer(const int msecs);
+  void stopReconnectTimer();
 
  public slots:
   void sendMessage(const QString& msg);
@@ -36,9 +43,6 @@ class Connection : public QObject {
  private:
   void connectSocket();
   void sendStatus();
-
-  class ConnectionPrivate;
-  ConnectionPrivate* m;
 };
 
 #endif // DIALOGUE_CONNECTION_HPP_

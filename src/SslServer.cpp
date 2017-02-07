@@ -5,9 +5,11 @@ SslServer::SslServer(QObject* parent)
   : QTcpServer{parent} {
 }
 
-void SslServer::incomingConnection(qintptr socketDescriptor)
-{
-  QSslSocket* serverSocket = new QSslSocket{};
+SslServer::~SslServer() {
+}
+
+void SslServer::incomingConnection(qintptr socketDescriptor) {
+  auto serverSocket = new QSslSocket{};
 
   const auto socketDescriptorSet =
     serverSocket->setSocketDescriptor(socketDescriptor);
