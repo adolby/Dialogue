@@ -95,11 +95,11 @@ Page {
           id: sendButton
           text: qsTr("Send")
           font.pixelSize: 18
-          enabled: messageField.length > 0
           onClicked: {
-            if (socketConnection.status === qsTr("Connected")) {
+            if (socketConnection.status === qsTr("Connected") &&
+                messageField.length > 0) {
               window.message(messageField.text);
-              messageField.text = "";
+              messageField.clear();
             }
           }
         }

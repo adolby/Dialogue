@@ -25,6 +25,14 @@ CONFIG(release, debug|release) {
   CONFIG += release
 }
 
+HEADERS += \
+  src/Dialogue.hpp \
+  src/Connection.hpp \
+  src/SslServer.hpp \
+  src/ConnectionInterface.hpp \
+  src/MessageModel.hpp \
+  src/Thread.hpp
+
 SOURCES += \
   src/main.cpp \
   src/Dialogue.cpp \
@@ -34,23 +42,20 @@ SOURCES += \
   src/MessageModel.cpp \
   src/Thread.cpp
 
-HEADERS += \
-  src/Dialogue.hpp \
-  src/Connection.hpp \
-  src/SslServer.hpp \
-  src/ConnectionInterface.hpp \
-  src/MessageModel.hpp \
-  src/Thread.hpp
-
 # Platform-specific configuration
 android {
   message(Android)
 
-  HEADERS +=
+  ANDROID_PACKAGE_SOURCE_DIR = $$PWD/resources/android
 
-  ANDROID_PACKAGE_SOURCE_DIR = resources/android/
-
-  OTHER_FILES += resources/android/AndroidManifest.xml
+  DISTFILES += \
+    resources/android/AndroidManifest.xml \
+    resources/android/gradle/wrapper/gradle-wrapper.jar \
+    resources/android/gradlew \
+    resources/android/res/values/libs.xml \
+    resources/android/build.gradle \
+    resources/android/gradle/wrapper/gradle-wrapper.properties \
+    resources/android/gradlew.bat
 
   debug {
     message(Debug)
@@ -128,8 +133,6 @@ android {
 
   win32 {
     message(Windows)
-
-    HEADERS +=
 
     win32-g++ {
       message(MinGW x86)

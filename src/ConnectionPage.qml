@@ -8,14 +8,14 @@ Page {
 
   header: ChatToolBar {
     Label {
-      text: qsTr("Connection Setup")
+      text: qsTr("Connection")
       font.pixelSize: 24
       anchors.centerIn: parent
     }
 
     ToolButton {
       id: conversationButton
-      text: qsTr("Conversation")
+      text: qsTr("Messages")
       anchors.right: parent.right
       anchors.rightMargin: 10
       anchors.verticalCenter: parent.verticalCenter
@@ -39,7 +39,7 @@ Page {
         Label {
           id: ipLabel
           font.pixelSize: 18
-          text: qsTr("Your contact's IP address")
+          text: qsTr("Contact's IP address")
         }
 
         TextField {
@@ -55,7 +55,7 @@ Page {
         Label {
           id: portLabel
           font.pixelSize: 18
-          text: qsTr("Optional: Port number")
+          text: qsTr("Port number")
         }
 
         TextField {
@@ -72,7 +72,7 @@ Page {
         Label {
           id: connectionLabel
           font.pixelSize: 18
-          text: qsTr("Connection status")
+          text: qsTr("Status")
         }
 
         Label {
