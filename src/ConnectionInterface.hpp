@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QString>
 
+namespace Dialogue {
+
 class ConnectionInterface : public QObject {
   Q_OBJECT
   Q_PROPERTY(QString status READ status NOTIFY statusChanged)
@@ -24,5 +26,7 @@ class ConnectionInterface : public QObject {
  private:
   QString m_status;
 };
+
+}
 
 #endif // DIALOGUE_CONNECTIONDATA_HPP_

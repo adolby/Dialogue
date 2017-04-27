@@ -76,11 +76,9 @@ Page {
         }
 
         Label {
-          text: socketConnection.status
+          text: window.status
           font.pixelSize: 18
-          color: socketConnection.status === qsTr("Connected") ?
-                                             "#4CAF50" :
-                                             "#3F51B5"
+          color: window.status === qsTr("Connected") ? "#4CAF50" : "#3F51B5"
         }
       }
     }

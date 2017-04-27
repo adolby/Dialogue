@@ -4,6 +4,8 @@
 #include <QThread>
 #include <QObject>
 
+namespace Dialogue {
+
 class Thread : public QThread {
   Q_OBJECT
   using QThread::run; // This is a final class
@@ -12,5 +14,7 @@ class Thread : public QThread {
   explicit Thread(QObject* parent = Q_NULLPTR);
   ~Thread();
 };
+
+}
 
 #endif // DIALOGUE_THREAD_HPP_

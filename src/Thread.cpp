@@ -1,10 +1,10 @@
 #include "Thread.hpp"
 
-Thread::Thread(QObject* parent)
+Dialogue::Thread::Thread(QObject* parent)
   : QThread{parent} {
 }
 
-Thread::~Thread() {
+Dialogue::Thread::~Thread() {
   quit();
   requestInterruption();
   wait();

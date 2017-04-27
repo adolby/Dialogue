@@ -3,15 +3,21 @@ import QtQuick.Controls 2.1
 import Qt.labs.settings 1.0
 
 ApplicationWindow {
+  property string status: "Not connected"
+
+  signal message(string msg)
+  signal ip(string ip)
+  signal port(int port)
+
+  function updateStatus(status) {
+    window.status = status;
+  }
+
   id: window
   visible: true
   title: qsTr("Dialogue")
   width: 800
   height: 600
-
-  signal message(string msg)
-  signal ip(string ip)
-  signal port(int port)
 
   Settings {
     property alias x: window.x

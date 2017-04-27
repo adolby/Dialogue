@@ -1,25 +1,13 @@
 #ifndef DIALOGUE_MESSAGEMODEL_HPP_
 #define DIALOGUE_MESSAGEMODEL_HPP_
 
+#include "Message.hpp"
 #include <QAbstractListModel>
 #include <QHash>
 #include <QString>
 #include <deque>
 
-class Message {
- public:
-  Message();
-  Message(const QString& msgText, const QString& recipient);
-
-  QString messageText() const;
-  QString timestamp() const;
-  QString recipient() const;
-
- private:
-  QString m_messageText;
-  QString m_timestamp;
-  QString m_recipient;
-};
+namespace Dialogue {
 
 class MessageModel : public QAbstractListModel {
   Q_OBJECT
@@ -37,15 +25,18 @@ class MessageModel : public QAbstractListModel {
   QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
 
  public slots:
+  void addMessage(const QString& msgText);
   void addMessage(const QString& msgText, const QString& recipient);
 
  protected:
   QHash<int, QByteArray> roleNames() const;
 
  private:
-  void addMessage(const Message& msg);
+  void appendMessage(const Dialogue::Message& msg);
 
   std::deque<Message> m_messages;
 };
+
+}
 
 #endif // DIALOGUE_MESSAGEMODEL_HPP_

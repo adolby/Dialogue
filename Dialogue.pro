@@ -6,7 +6,7 @@ TEMPLATE = app
 
 CONFIG += c++11
 
-RESOURCES += src/qml.qrc
+RESOURCES += src/qml.qrc resources/assets.qrc
 
 # Qt Creator Debug/Release Differentiation
 # Ensure one "debug_and_release" in CONFIG, for clarity.
@@ -26,19 +26,19 @@ CONFIG(release, debug|release) {
 }
 
 HEADERS += \
-  src/Dialogue.hpp \
+  src/Application.hpp \
   src/Connection.hpp \
   src/SslServer.hpp \
-  src/ConnectionInterface.hpp \
+  src/Message.hpp \
   src/MessageModel.hpp \
   src/Thread.hpp
 
 SOURCES += \
   src/main.cpp \
-  src/Dialogue.cpp \
+  src/Application.cpp \
   src/Connection.cpp \
   src/SslServer.cpp \
-  src/ConnectionInterface.cpp \
+  src/Message.cpp \
   src/MessageModel.cpp \
   src/Thread.cpp
 
@@ -116,9 +116,13 @@ android {
     message(macOS)
     message(clang x86_64)
 
+    LIBS += /usr/local/Cellar/openssl/1.0.2k/lib/libssl.a \
+            /usr/local/Cellar/openssl/1.0.2k/lib/libcrypto.a
+
     QMAKE_CXXFLAGS += -fstack-protector
     QMAKE_LFLAGS += -fstack-protector
 
+    QMAKE_TARGET_BUNDLE_PREFIX = com.andrewdolby
     ICON = resources/icons/dialogue.icns
 
     debug {

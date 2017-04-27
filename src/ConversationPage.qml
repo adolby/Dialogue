@@ -57,7 +57,7 @@ Page {
               id: messageLabel
               font.pixelSize: 18
               text: model.messageText
-              color: sentByMe ? "white" : "white"
+              color: "white"
               anchors.fill: parent
               anchors.margins: 12
               wrapMode: Label.Wrap
@@ -68,7 +68,7 @@ Page {
         Label {
           id: timestampText
           text: Qt.formatDateTime(model.timestamp, "MMM d, hh:mm")
-          color: "#3F51B5"
+          color: sentByMe ? "#3F51B5" : "#FF9800"
           anchors.right: sentByMe ? parent.right : undefined
         }
       }
@@ -96,7 +96,7 @@ Page {
           text: qsTr("Send")
           font.pixelSize: 18
           onClicked: {
-            if (socketConnection.status === qsTr("Connected") &&
+            if (window.status === qsTr("Connected") &&
                 messageField.length > 0) {
               window.message(messageField.text);
               messageField.clear();

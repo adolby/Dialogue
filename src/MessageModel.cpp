@@ -1,42 +1,18 @@
 #include "MessageModel.hpp"
-#include <QDateTime>
 
-Message::Message() {
-}
+#include <QDebug>
 
-Message::Message(const QString& msgText, const QString& recipient)
-  : m_messageText{msgText},
-    m_timestamp{QDateTime::currentDateTime().toString(Qt::ISODate)},
-    m_recipient{recipient} {
-}
-
-QString Message::messageText() const {
-  return m_messageText;
-}
-
-QString Message::timestamp() const {
-  return m_timestamp;
-}
-
-QString Message::recipient() const {
-  return m_recipient;
-}
-
-MessageModel::MessageModel(QObject* parent)
+Dialogue::MessageModel::MessageModel(QObject* parent)
   : QAbstractListModel{parent} {
 }
 
-void MessageModel::addMessage(const QString& msgText,
-                              const QString& recipient) {
-  addMessage(Message{msgText, recipient});
-}
-
-int MessageModel::rowCount(const QModelIndex& parent) const {
+int Dialogue::MessageModel::rowCount(const QModelIndex& parent) const {
   Q_UNUSED(parent);
   return static_cast<int>(m_messages.size());
 }
 
-QVariant MessageModel::data(const QModelIndex& index, int role) const {
+QVariant Dialogue::MessageModel::data(const QModelIndex& index,
+                                      int role) const {
   const auto size = static_cast<int>(m_messages.size());
 
   if (index.row() < 0 || index.row() >= size) {
@@ -58,7 +34,16 @@ QVariant MessageModel::data(const QModelIndex& index, int role) const {
   return QVariant{};
 }
 
-QHash<int, QByteArray> MessageModel::roleNames() const {
+void Dialogue::MessageModel::addMessage(const QString& msgText) {
+  addMessage(msgText, tr("Me"));
+}
+
+void Dialogue::MessageModel::addMessage(const QString& msgText,
+                                        const QString& recipient) {
+  appendMessage(Message{msgText, recipient});
+}
+
+QHash<int, QByteArray> Dialogue::MessageModel::roleNames() const {
   QHash<int, QByteArray> roles;
 
   roles[MessageTextRole] = "messageText";
@@ -68,7 +53,9 @@ QHash<int, QByteArray> MessageModel::roleNames() const {
   return roles;
 }
 
-void MessageModel::addMessage(const Message& msg) {
+void Dialogue::MessageModel::appendMessage(const Message& msg) {
+  qDebug() << "Appending msg: " << msg.messageText();
+
   beginInsertRows(QModelIndex{}, 0, 0);
   m_messages.push_front(msg);
   endInsertRows();

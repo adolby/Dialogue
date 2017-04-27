@@ -3,6 +3,10 @@
 
 #include <QObject>
 #include <QString>
+#include <QAbstractSocket>
+#include <QSslError>
+
+namespace Dialogue {
 
 class ConnectionPrivate;
 
@@ -26,7 +30,7 @@ class Connection : public QObject {
   void stopReconnectTimer();
 
  public slots:
-  void sendMessage(const QString& msg);
+  void sendMessage(const QString& message);
   void ip(const QString& ip);
   void port(const int port);
 
@@ -34,15 +38,19 @@ class Connection : public QObject {
   void toggleConnectionMode();
   void connectToPeer();
   void socketConnected();
-  void socketError();
+  void socketError(QAbstractSocket::SocketError error);
+  void sslErrors(const QList<QSslError>& errorList);
+  void socketEncrypted();
   void socketDisconnected();
-  void socketReadyRead();
-  void socketBytesWritten(const qint64 numberOfBytes);
+  void readSocket();
+  void socketBytesWritten(qint64 numberOfBytes);
   void serverNewConnection();
 
  private:
   void connectSocket();
   void sendStatus();
 };
+
+}
 
 #endif // DIALOGUE_CONNECTION_HPP_
