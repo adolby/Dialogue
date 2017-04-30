@@ -77,8 +77,6 @@ Dialogue::Connection::Connection(QObject* parent)
           &Connection::socketError);
   connect(d->socket, &QTcpSocket::readyRead,
           this, &Connection::readSocket);
-  connect(d->socket, &QTcpSocket::bytesWritten,
-          this, &Connection::socketBytesWritten);
 
   // SSL connections
 //  connect(d->socket,
@@ -91,7 +89,7 @@ Dialogue::Connection::Connection(QObject* parent)
 //          &Connection::socketEncrypted);
 
   connect(&d->server, &QTcpServer::newConnection,
-          this, &Connection::serverNewConnection);
+          this, &Connection::startServerConnection);
 
   connect(this,
           &Connection::startToggleModeTimer,
@@ -269,11 +267,7 @@ void Dialogue::Connection::readSocket() {
   }
 }
 
-void Dialogue::Connection::socketBytesWritten(qint64 numberOfBytes) {
-  qDebug() << "Number of bytes written: " << numberOfBytes;
-}
-
-void Dialogue::Connection::serverNewConnection() {
+void Dialogue::Connection::startServerConnection() {
   Q_D(Connection);
 
   qDebug() << "Connection::serverNewConnection";
@@ -305,8 +299,6 @@ void Dialogue::Connection::connectSocket() {
             &Connection::socketError);
     connect(d->socket, &QTcpSocket::readyRead,
             this, &Connection::readSocket);
-    connect(d->socket, &QTcpSocket::bytesWritten,
-            this, &Connection::socketBytesWritten);
 
     // SSL connections
     connect(static_cast<QSslSocket*>(d->socket),

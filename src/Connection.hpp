@@ -43,8 +43,7 @@ class Connection : public QObject {
   void socketEncrypted();
   void socketDisconnected();
   void readSocket();
-  void socketBytesWritten(qint64 numberOfBytes);
-  void serverNewConnection();
+  void startServerConnection();
 
  private:
   void connectSocket();
