@@ -64,7 +64,7 @@ void Dialogue::Application::connectGUI(QObject* object, const QUrl& url) {
   Q_D(Application);
   Q_UNUSED(url);
 
-  if ( object ) {
+  if (object) {
     auto parentWindow = qobject_cast<QQuickWindow*>(object);
 
     connect(parentWindow, SIGNAL(message(const QString&)),
