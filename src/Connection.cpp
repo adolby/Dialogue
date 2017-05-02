@@ -91,21 +91,9 @@ Dialogue::Connection::Connection(QObject* parent)
   connect(&d->server, &QTcpServer::newConnection,
           this, &Connection::startServerConnection);
 
-  connect(this,
-          &Connection::startToggleModeTimer,
-          &d->toggleModeTimer,
-          QOverload<int>::of(&QTimer::start));
-  connect(this, &Connection::stopToggleModeTimer,
-          &d->toggleModeTimer, &QTimer::stop);
   connect(&d->toggleModeTimer, &QTimer::timeout,
           this, &Connection::toggleConnectionMode);
 
-  connect(this,
-          &Connection::startReconnectTimer,
-          &d->reconnectTimer,
-          QOverload<int>::of(&QTimer::start));
-  connect(this, &Connection::stopReconnectTimer,
-          &d->reconnectTimer, &QTimer::stop);
   connect(&d->reconnectTimer, &QTimer::timeout,
           this, &Connection::connectToPeer);
 }
@@ -151,18 +139,18 @@ void Dialogue::Connection::toggleConnectionMode() {
   qDebug() << "Connection::toggleConnectionMode";
 
   if (!d->toggleModeTimer.isActive()) {
-    emit startToggleModeTimer(kConnectionModeTimeout);
+    d->toggleModeTimer.start(kConnectionModeTimeout);
   }
 
   if ( d->socket ) {
     if (QAbstractSocket::UnconnectedState == d->socket->state()) {
       if (d->connectionAttempts > 10) {
-        emit stopToggleModeTimer();
-        emit startToggleModeTimer(kConnectionModeTimeout + 2500);
+        d->toggleModeTimer.stop();
+        d->toggleModeTimer.start(kConnectionModeTimeout + 2500);
       }
       else if (d->connectionAttempts > 20) {
-        emit stopToggleModeTimer();
-        emit startToggleModeTimer(kConnectionModeTimeout);
+        d->toggleModeTimer.stop();
+        d->toggleModeTimer.start(kConnectionModeTimeout);
         d->connectionAttempts = 0;
       }
 
@@ -175,13 +163,13 @@ void Dialogue::Connection::toggleConnectionMode() {
         d->socket = new QSslSocket{this};
         connectSocket();
 
-        emit startReconnectTimer(kReconnectTimeout);
+        d->reconnectTimer.start(kReconnectTimeout);
       }
       else if (ConnectionMode::ClientMode == d->mode) {
         d->mode = ConnectionMode::ServerMode;
 
         // Stop client mode reconnect timer
-        emit stopReconnectTimer();
+        d->reconnectTimer.stop();
 
         if (d->port > 0) {
           d->socket->abort();
@@ -224,6 +212,8 @@ void Dialogue::Connection::socketConnected() {
   qDebug() << "Connection::socketConnected";
 
   d->connectionAttempts = 0;
+  d->toggleModeTimer.stop();
+  d->reconnectTimer.stop();
   emit sendStatus();
 }
 
@@ -245,7 +235,10 @@ void Dialogue::Connection::socketEncrypted() {
 }
 
 void Dialogue::Connection::socketDisconnected() {
+  Q_D(Connection);
   qDebug() << "Connection::socketDisconnected";
+
+  d->toggleModeTimer.start(kConnectionModeTimeout);
 
   emit sendStatus();
 }
@@ -281,6 +274,8 @@ void Dialogue::Connection::startServerConnection() {
   connectSocket();
 
   d->server.close();
+
+  d->toggleModeTimer.stop();
 
   emit sendStatus();
 }
@@ -320,7 +315,7 @@ void Dialogue::Connection::sendStatus() {
   const auto reconnectTime =
     static_cast<int>(d->toggleModeTimer.remainingTime() / 1000);
 
-  const QString connectionState = [=]() {
+  const QString connectionState = [d, reconnectTime]() {
     QString state = tr("Not connected. Trying again in ") %
                     QString{"%1 "}.arg(reconnectTime) % tr("seconds...");
 

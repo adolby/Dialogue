@@ -24,10 +24,6 @@ class Connection : public QObject {
   void incomingMessage(const QString& msg);
   void outgoingMessage(const QString& msg, const QString& recipient);
   void displayError(const QString& errorMsg);
-  void startToggleModeTimer(const int msecs);
-  void stopToggleModeTimer();
-  void startReconnectTimer(const int msecs);
-  void stopReconnectTimer();
 
  public slots:
   void sendMessage(const QString& message);
