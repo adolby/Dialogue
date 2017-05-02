@@ -214,6 +214,7 @@ void Dialogue::Connection::socketConnected() {
   d->connectionAttempts = 0;
   d->toggleModeTimer.stop();
   d->reconnectTimer.stop();
+
   emit sendStatus();
 }
 
@@ -313,7 +314,7 @@ void Dialogue::Connection::sendStatus() {
   Q_D(Connection);
 
   const auto reconnectTime =
-    static_cast<int>(d->toggleModeTimer.remainingTime() / 1000);
+    static_cast<qint64>(d->toggleModeTimer.remainingTime() / 1000);
 
   const QString connectionState = [d, reconnectTime]() {
     QString state = tr("Not connected. Trying again in ") %
