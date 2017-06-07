@@ -67,7 +67,7 @@ Page {
 
         Label {
           id: timestampText
-          text: Qt.formatDateTime(model.timestamp, "MMM d, hh:mm")
+          text: Qt.formatDateTime(model.timestamp, "MMM d, hh:mm:ss a")
           color: sentByMe ? "#3F51B5" : "#FF9800"
           anchors.right: sentByMe ? parent.right : undefined
         }
