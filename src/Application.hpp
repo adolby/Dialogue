@@ -22,7 +22,7 @@ class Application : public QObject {
   void updateStatus(const QVariant& status);
 
  private slots:
-  void connectGUI(QObject* object, const QUrl& url);
+  void connectGUI(QObject* object, const QUrl& url) const;
   void cleanup();
 };
 

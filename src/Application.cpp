@@ -60,8 +60,8 @@ Dialogue::Application::Application(QObject* parent)
 Dialogue::Application::~Application() {
 }
 
-void Dialogue::Application::connectGUI(QObject* object, const QUrl& url) {
-  Q_D(Application);
+void Dialogue::Application::connectGUI(QObject* object, const QUrl& url) const {
+  Q_D(const Application);
   Q_UNUSED(url);
 
   if (object) {
