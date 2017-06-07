@@ -8,8 +8,8 @@
 
 #include <QDebug>
 
-const quint16 kConnectionModeTimeout = 5000;
-const quint16 kReconnectTimeout = 500;
+const quint16 kConnectionModeTimeout = 6000;
+const quint16 kReconnectTimeout = 1500;
 const quint16 kDefaultPortNumber = 28710;
 
 enum ConnectionMode {
@@ -29,10 +29,9 @@ class Dialogue::ConnectionPrivate {
   QTimer toggleModeTimer;
   QTimer reconnectTimer;
 
-  //QSslSocket* socket;
-  //SslServer server;
-  QTcpSocket* socket;
-  QTcpServer server;
+  QSslSocket* socket;
+  //QTcpServer server;
+  SslServer server;
 
   QDataStream stream;
 
@@ -63,9 +62,10 @@ Dialogue::Connection::Connection(QObject* parent)
   : QObject{parent}, d_ptr{new ConnectionPrivate{this}} {
   Q_D(Connection);
 
-  //d->server->setLocalCertificate(QStringLiteral(":/keys/server.crt"));
-  //d->server->setPrivateKey(QStringLiteral(":/keys/private.key"));
-  //d->server->setProtocol(QSsl::TlsV1_2);
+  d->server.setLocalCertificate(QStringLiteral(":/keys/server.crt"), QSsl::Pem);
+  d->server.setPrivateKey(QStringLiteral(":/keys/private.key"),
+                          QSsl::KeyAlgorithm::Rsa, QSsl::Pem, "");
+  d->server.setProtocol(QSsl::TlsV1_2);
 
   connect(d->socket, &QTcpSocket::connected,
           this, &Connection::socketConnected);
@@ -79,14 +79,14 @@ Dialogue::Connection::Connection(QObject* parent)
           this, &Connection::readSocket);
 
   // SSL connections
-//  connect(d->socket,
-//          QOverload<const QList<QSslError>&>::of(&QSslSocket::sslErrors),
-//          this,
-//          &Connection::sslErrors);
-//  connect(d->socket,
-//          &QSslSocket::encrypted,
-//          this,
-//          &Connection::socketEncrypted);
+  connect(d->socket,
+          QOverload<const QList<QSslError>&>::of(&QSslSocket::sslErrors),
+          this,
+          &Connection::sslErrors);
+  connect(d->socket,
+          &QSslSocket::encrypted,
+          this,
+          &Connection::socketEncrypted);
 
   connect(&d->server, &QTcpServer::newConnection,
           this, &Connection::startServerConnection);
@@ -219,8 +219,12 @@ void Dialogue::Connection::socketConnected() {
 }
 
 void Dialogue::Connection::socketError(QAbstractSocket::SocketError error) {
+  Q_D(Connection);
+
   Q_UNUSED(error);
-  qDebug() << "Connection::socketError";
+
+  qDebug() << "Connection::socketError" << error;
+  qDebug() << "Connection::socketError" << d->socket->errorString();
 
   emit displayError(tr("Couldn't connect. Reconnecting..."));
   emit sendStatus();
@@ -264,25 +268,31 @@ void Dialogue::Connection::readSocket() {
 void Dialogue::Connection::startServerConnection() {
   Q_D(Connection);
 
-  qDebug() << "Connection::serverNewConnection";
+  qDebug() << "Connection::startServerConnection";
 
-  d->destroySocket();
+  QTcpSocket* connection = d->server.nextPendingConnection();
 
-  // Grab the server socket
-  d->socket = d->server.nextPendingConnection();
+  if (connection) {
+    d->destroySocket();
 
-  // Connect new connected socket signals up to this class's slots
-  connectSocket();
+    // Grab the server socket
+    d->socket = dynamic_cast<QSslSocket*>(connection);
 
-  d->server.close();
+    // Connect new connected socket signals up to this class's slots
+    connectSocket();
 
-  d->toggleModeTimer.stop();
+    d->server.close();
 
-  emit sendStatus();
+    d->toggleModeTimer.stop();
+
+    emit sendStatus();
+  }
 }
 
 void Dialogue::Connection::connectSocket() {
   Q_D(Connection);
+
+  qDebug() << "Connection::connectSocket";
 
   if (d->socket) {
     connect(d->socket, &QTcpSocket::connected,
@@ -290,7 +300,8 @@ void Dialogue::Connection::connectSocket() {
     connect(d->socket, &QTcpSocket::disconnected,
             this, &Connection::socketDisconnected);
     connect(d->socket,
-            QOverload<QAbstractSocket::SocketError>::of(&QAbstractSocket::error),
+            QOverload<QAbstractSocket::SocketError>::
+            of(&QAbstractSocket::error),
             this,
             &Connection::socketError);
     connect(d->socket, &QTcpSocket::readyRead,
