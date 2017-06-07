@@ -22,8 +22,6 @@ class SslServer : public QTcpServer {
   explicit SslServer(QObject* parent = Q_NULLPTR);
   ~SslServer();
 
-  QSslSocket* nextPendingConnection();
-
   void setLocalCertificate(const QSslCertificate& certificate);
   bool setLocalCertificate(const QString& fileName,
                            QSsl::EncodingFormat format);

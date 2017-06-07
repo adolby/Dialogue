@@ -8,7 +8,6 @@ class Dialogue::SslServerPrivate {
  public:
   explicit SslServerPrivate(SslServer* parent);
 
-  QList<QSslSocket*> connections;
   QSslCertificate certificate;
   QSslKey privateKey;
   QSsl::SslProtocol protocol;
@@ -22,15 +21,6 @@ Dialogue::SslServer::SslServer(QObject* parent)
 }
 
 Dialogue::SslServer::~SslServer() {
-}
-
-QSslSocket* Dialogue::SslServer::nextPendingConnection() {
-  Q_D(SslServer);
-
-  QSslSocket* connection =
-      d->connections.isEmpty() ? Q_NULLPTR : d->connections.takeFirst();
-
-  return connection;
 }
 
 void Dialogue::SslServer::setLocalCertificate(const QSslCertificate& certificate) {
