@@ -2,6 +2,7 @@
 #define DIALOGUE_CONNECTION_HPP_
 
 #include <QObject>
+#include <QTcpSocket>
 #include <QString>
 
 class ConnectionPrivate;
@@ -34,7 +35,7 @@ class Connection : public QObject {
   void toggleConnectionMode();
   void connectToPeer();
   void socketConnected();
-  void socketError();
+  void socketError(QTcpSocket::SocketError err);
   void socketDisconnected();
   void socketReadyRead();
   void socketBytesWritten(const qint64 numberOfBytes);

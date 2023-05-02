@@ -1,10 +1,10 @@
-QT += core network qml quick
+QT += core network qml quick quickcontrols2
 
 TARGET = Dialogue
 
 TEMPLATE = app
 
-CONFIG += c++11
+CONFIG += c++17
 
 RESOURCES += src/qml.qrc
 
@@ -28,7 +28,6 @@ CONFIG(release, debug|release) {
 HEADERS += \
   src/Dialogue.hpp \
   src/Connection.hpp \
-  src/SslServer.hpp \
   src/ConnectionInterface.hpp \
   src/MessageModel.hpp \
   src/Thread.hpp
@@ -37,7 +36,6 @@ SOURCES += \
   src/main.cpp \
   src/Dialogue.cpp \
   src/Connection.cpp \
-  src/SslServer.cpp \
   src/ConnectionInterface.cpp \
   src/MessageModel.cpp \
   src/Thread.cpp
@@ -98,8 +96,8 @@ android {
       }
     }
 
-    linux-g++-64 {
-      message(g++ x86_64)
+    linux-g++ {
+      message(g++)
 
       debug {
         message(Debug)
@@ -112,7 +110,7 @@ android {
     }
   } # End Linux
 
-  macx {
+  macos {
     message(macOS)
     message(clang x86_64)
 
@@ -147,7 +145,7 @@ android {
       }
     }
 
-    win32-msvc2015 {
+    win32-msvc {
       contains(QT_ARCH, x86_64) {
         message(MSVC x86_64)
 

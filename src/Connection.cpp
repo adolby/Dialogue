@@ -1,8 +1,6 @@
 #include "Connection.hpp"
-#include <QTcpSocket>
 #include <QTcpServer>
 #include <QTimer>
-#include <QStringRef>
 #include <QStringBuilder>
 
 const int kConnectionModeTimeout = 5000;
@@ -59,7 +57,7 @@ Connection::Connection(QObject* parent)
   connect(d->socket, &QTcpSocket::disconnected,
           this, &Connection::socketDisconnected);
   connect(d->socket,
-          QOverload<QAbstractSocket::SocketError>::of(&QAbstractSocket::error),
+          &QTcpSocket::errorOccurred,
           this,
           &Connection::socketError);
   connect(d->socket, &QTcpSocket::readyRead,
@@ -194,7 +192,9 @@ void Connection::socketConnected() {
   emit sendStatus();
 }
 
-void Connection::socketError() {
+void Connection::socketError(QAbstractSocket::SocketError err) {
+  Q_UNUSED(err);
+
   emit displayError(tr("Couldn't connect. Reconnecting..."));
   emit sendStatus();
 }
@@ -206,8 +206,8 @@ void Connection::socketDisconnected() {
 void Connection::socketReadyRead() {
   Q_D(Connection);
 
-  const auto msg = d->socket->readAll();
-  emit incomingMessage(msg);
+  const QByteArray msg = d->socket->readAll();
+  emit incomingMessage(QString(msg));
 }
 
 void Connection::socketBytesWritten(const qint64 numberOfBytes) {
