@@ -1,0 +1,52 @@
+name: macOS Develop
+
+on:
+  push:
+    branches:
+      - 'develop'
+  pull_request:
+    branches:
+      - 'develop'
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  SOURCE_DIR: ${{ github.workspace }}
+  QT_VERSION: 6.5.0
+
+jobs:
+  build:
+    runs-on:  macos-latest
+
+    steps:
+      - name: (1) Checkout repo
+        uses: actions/checkout@v3
+
+      - name: (2) Install Qt
+        uses: jurplel/install-qt-action@v3
+        with:
+          aqtversion: '==3.1.*'
+          py7zrversion: '>=0.20.2'
+          version: ${{ env.QT_VERSION }}
+          host: mac
+          target: desktop
+          arch: clang_64
+          cache: true
+
+      - name: (3) Get short SHA for artifact naming
+        run: echo "DIALOGUE_VERSION=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
+
+      - name: (4) Build
+        working-directory: ${{ env.SOURCE_DIR }}
+        run: |
+          cd "${{ env.SOURCE_DIR }}"
+          chmod +x build_macOS_ci.sh
+          ./build_macOS_ci.sh
+
+      - name: (5) Save build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: "dialogue_${{ env.DIALOGUE_VERSION }}_macos.tar.gz"
+          path: "${{ env.SOURCE_DIR }}/build/macOS/clang/x86_64/release/dialogue_${{ env.DIALOGUE_VERSION }}_macos.tar.gz"
