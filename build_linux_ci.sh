@@ -5,7 +5,7 @@ set -o errexit -o nounset
 PROJECT_DIR="${SOURCE_DIR}"
 QT_PATH="${Qt6_DIR}"
 QT_TOOLS="${IQTA_TOOLS}"
-KRYVO_VERSION="${KRYVO_VERSION:-dev}"
+DIALOGUE_VERSION="${DIALOGUE_VERSION:-dev}"
 OPENSSL_INCLUDE_PATH="/usr/include"
 OPENSSL_LIB_PATH="/usr/lib/x86_64-linux-gnu"
 
@@ -28,9 +28,10 @@ make
 echo "Packaging..."
 
 echo "Copying app to packaging directory..."
-cp -a "${PROJECT_DIR}/build/linux/gcc/x86_64/release/." "${PROJECT_DIR}/build/linux/gcc/x86_64/release/Dialogue/"
+mkdir -p "${PROJECT_DIR}/build/linux/gcc/x86_64/deploy/Dialogue/"
+cp -a "${PROJECT_DIR}/build/linux/gcc/x86_64/release/." "${PROJECT_DIR}/build/linux/gcc/x86_64/deploy/Dialogue/"
 
-cd "${PROJECT_DIR}/build/linux/gcc/x86_64/release/Kryvo/"
+cd "${PROJECT_DIR}/build/linux/gcc/x86_64/deploy/Dialogue/"
 
 rm -rf moc
 rm -rf obj
