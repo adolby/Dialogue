@@ -26,8 +26,6 @@ qmake --version
 # Build Dialogue
 echo "Building Dialogue..."
 cd "${PROJECT_DIR}"
-
-cd ${project_dir}
 qmake -makefile CONFIG+=release
 make
 
