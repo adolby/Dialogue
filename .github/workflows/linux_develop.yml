@@ -56,4 +56,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: "dialogue_${{ env.DIALOGUE_VERSION }}_linux_x86_64_portable.tar.gz"
-          path: "${{ env.SOURCE_DIR }}/build/linux/gcc/x86_64/release/dialogue_${{ env.DIALOGUE_VERSION }}_linux_x86_64_portable.tar.gz"
+          path: "${{ env.SOURCE_DIR }}/build/linux/gcc/x86_64/deploy/dialogue_${{ env.DIALOGUE_VERSION }}_linux_x86_64_portable.tar.gz"
