@@ -1,8 +1,6 @@
 # Dialogue
 
-Dialogue is an open-source direct connection chat app. Dialogue doesn't keep user name information or logs and does not communicate with a central server. It is currently a work in progress. I can't recommend using it at all until secure connections (SSL) are supported, which is the next anticipated feature.
-
-[![Build Status](https://travis-ci.org/adolby/Dialogue.svg?branch=master)](https://travis-ci.org/adolby/Dialogue)
+Dialogue is an open-source direct connection chat app. Dialogue doesn't keep user name information or logs and does not communicate with a central server. It is currently a work in progress. I can't recommend using it at all until secure connections are supported, which is the next anticipated feature.
 
 ## Getting Started
 
@@ -32,6 +30,6 @@ Qt source code is available at https://code.qt.io.
 
 If you'd like to contribute to Dialogue, you can fork the project on GitHub and submit a pull request. To build Dialogue, you'll need Qt 6.0 (or later) and a C++14 capable compiler.
 
-##Contact
+## Contact
 
 You can contact the project creator via email at andrewdolby@gmail.com.
