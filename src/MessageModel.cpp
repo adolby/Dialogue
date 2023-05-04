@@ -5,9 +5,9 @@ Message::Message() {
 }
 
 Message::Message(const QString& msgText, const QString& recipient)
-  : m_messageText{msgText},
-    m_timestamp{QDateTime::currentDateTime().toString(Qt::ISODate)},
-    m_recipient{recipient} {
+  : m_messageText(msgText),
+    m_timestamp(QDateTime::currentDateTime().toString(Qt::ISODate)),
+    m_recipient(recipient) {
 }
 
 QString Message::messageText() const {
@@ -23,12 +23,12 @@ QString Message::recipient() const {
 }
 
 MessageModel::MessageModel(QObject* parent)
-  : QAbstractListModel{parent} {
+  : QAbstractListModel(parent) {
 }
 
 void MessageModel::addMessage(const QString& msgText,
                               const QString& recipient) {
-  addMessage(Message{msgText, recipient});
+  addMessage(Message(msgText, recipient));
 }
 
 int MessageModel::rowCount(const QModelIndex& parent) const {
@@ -40,36 +40,34 @@ QVariant MessageModel::data(const QModelIndex& index, int role) const {
   const auto size = static_cast<int>(m_messages.size());
 
   if (index.row() < 0 || index.row() >= size) {
-    return QVariant{};
+    return QVariant();
   }
 
   const Message& message = m_messages.at(index.row());
 
-  if (role == MessageTextRole) {
+  if (MessageTextRole == role) {
     return message.messageText();
-  }
-  else if (role == TimestampRole) {
+  } else if (TimestampRole== role) {
     return message.timestamp();
-  }
-  else if (role == RecipientRole) {
+  } else if (RecipientRole == role) {
     return message.recipient();
   }
 
-  return QVariant{};
+  return QVariant();
 }
 
 QHash<int, QByteArray> MessageModel::roleNames() const {
   QHash<int, QByteArray> roles;
 
-  roles[MessageTextRole] = "messageText";
-  roles[TimestampRole] = "timestamp";
-  roles[RecipientRole] = "recipient";
+  roles[MessageTextRole] = QByteArrayLiteral("messageText");
+  roles[TimestampRole] = QByteArrayLiteral("timestamp");
+  roles[RecipientRole] = QByteArrayLiteral("recipient");
 
   return roles;
 }
 
 void MessageModel::addMessage(const Message& msg) {
-  beginInsertRows(QModelIndex{}, 0, 0);
+  beginInsertRows(QModelIndex(), 0, 0);
   m_messages.push_front(msg);
   endInsertRows();
 }

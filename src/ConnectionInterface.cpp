@@ -1,15 +1,15 @@
 #include "ConnectionInterface.hpp"
 
 ConnectionInterface::ConnectionInterface(QObject* parent)
-  : QObject{parent}, m_status{QStringLiteral("Not connected")} {
+  : QObject(parent), status_(tr("Not connected")) {
 }
 
 QString ConnectionInterface::status() const {
-  return m_status;
+  return status_;
 }
 
 void ConnectionInterface::updateStatus(const QString& status) {
-  m_status = status;
+  status_ = status;
   emit statusChanged();
 }
 

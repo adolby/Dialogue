@@ -21,14 +21,14 @@ class DialoguePrivate {
   Thread connectionThread;
 };
 
-DialoguePrivate::DialoguePrivate(Dialogue* parent)
-  : connectionInterface{new ConnectionInterface{parent}},
-    messageModel{new MessageModel{parent}},
-    connectionThread{parent} {
+DialoguePrivate::DialoguePrivate(Dialogue* d)
+  : connectionInterface(new ConnectionInterface(d)),
+    messageModel(new MessageModel(d)),
+    connectionThread(d) {
 }
 
 Dialogue::Dialogue(QObject* parent)
-  : QObject{parent}, d_ptr{new DialoguePrivate{this}} {
+  : QObject(parent), d_ptr(std::make_unique<DialoguePrivate>(this)) {
   Q_D(Dialogue);
 
   d->engine.rootContext()->setContextProperty(QStringLiteral("messageModel"),
@@ -36,7 +36,7 @@ Dialogue::Dialogue(QObject* parent)
   d->engine.rootContext()->setContextProperty(QStringLiteral("socketConnection"),
                                               d->connectionInterface);
 
-  d->engine.load(QUrl{QStringLiteral("qrc:/main.qml")});
+  d->engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
   auto root = d->engine.rootObjects().first();
   auto parentWindow = qobject_cast<QQuickWindow*>(root);
@@ -62,11 +62,11 @@ Dialogue::Dialogue(QObject* parent)
   connect(&d->connection, &Connection::outgoingMessage,
           d->connectionInterface, &ConnectionInterface::outgoingMessage);
 
-  connect(d->connectionInterface,
-          &ConnectionInterface::message,
-          d->messageModel,
-          QOverload<const QString&, const QString&>::
-            of(&MessageModel::addMessage));
+  connect(
+    d->connectionInterface,
+    &ConnectionInterface::message,
+    d->messageModel,
+    QOverload<const QString&, const QString&>::of(&MessageModel::addMessage));
 
   d->connection.moveToThread(&d->connectionThread);
   d->connectionThread.start();

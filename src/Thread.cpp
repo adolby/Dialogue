@@ -1,7 +1,7 @@
 #include "Thread.hpp"
 
 Thread::Thread(QObject* parent)
-  : QThread{parent} {
+  : QThread(parent) {
 }
 
 Thread::~Thread() {

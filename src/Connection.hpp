@@ -4,16 +4,17 @@
 #include <QObject>
 #include <QTcpSocket>
 #include <QString>
+#include <memory>
 
 class ConnectionPrivate;
 
 class Connection : public QObject {
   Q_OBJECT
   Q_DECLARE_PRIVATE(Connection)
-  QScopedPointer<ConnectionPrivate> const d_ptr;
+  std::unique_ptr<ConnectionPrivate> const d_ptr;
 
  public:
-  explicit Connection(QObject* parent = Q_NULLPTR);
+  explicit Connection(QObject* parent = nullptr);
   virtual ~Connection();
 
  signals:

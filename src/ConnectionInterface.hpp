@@ -9,7 +9,7 @@ class ConnectionInterface : public QObject {
   Q_PROPERTY(QString status READ status NOTIFY statusChanged)
 
  public:
-  explicit ConnectionInterface(QObject* parent = Q_NULLPTR);
+  explicit ConnectionInterface(QObject* parent = nullptr);
   QString status() const;
 
  signals:
@@ -22,7 +22,7 @@ class ConnectionInterface : public QObject {
   void outgoingMessage(const QString& msgText, const QString& recipient);
 
  private:
-  QString m_status;
+  QString status_;
 };
 
 #endif // DIALOGUE_CONNECTIONDATA_HPP_
