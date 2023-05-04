@@ -87,7 +87,6 @@ Page {
           id: messageField
           font.pixelSize: 18
           Layout.fillWidth: true
-          placeholderText: qsTr("Compose message")
           wrapMode: TextArea.Wrap
         }
 
