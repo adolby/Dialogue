@@ -53,4 +53,4 @@ jobs:
           fail_on_unmatched_files: true
           files: |
             build/windows/msvc/x86_64/release/dialogue_${{ env.DIALOGUE_VERSION }}_windows_x86_64_portable.zip
-            installer/windows/x86_64/dialogue_${{ env.DIALOGUE_VERSION }}_windows_x86_64_installer.exe"
+            installer/windows/x86_64/dialogue_${{ env.DIALOGUE_VERSION }}_windows_x86_64_installer.exe
